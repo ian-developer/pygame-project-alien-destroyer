@@ -1,4 +1,5 @@
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 import game_functions as gf
 import pygame
@@ -14,6 +15,9 @@ def run_game():
 
     pygame.display.set_caption("Alien Destroyer")
 
+    # Create an instance to store game statistics.
+    stats = GameStats(ai_settings)
+
     ship = Ship(ai_settings, screen)
     # make a group to store bullets in
     bullets = Group()
@@ -28,9 +32,12 @@ def run_game():
 
     while True:
         gf.check_events(ai_settings, screen, ship, bullets)
-        ship.update()
-        gf.update_bullets(aliens, bullets)
-        gf.update_aliens(ai_settings, aliens)
+
+        if stats.game_active:
+            ship.update()
+            gf.update_bullets(ai_settings, screen, ship ,aliens, bullets)
+            gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
+            
         gf.update_screen(ai_settings, screen, ship, aliens, bullets)
 
 run_game()
