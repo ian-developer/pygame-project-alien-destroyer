@@ -1,5 +1,6 @@
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from ship import Ship
 import game_functions as gf
@@ -16,21 +17,22 @@ def run_game():
 
     pygame.display.set_caption("Alien Destroyer")
 
-    #Make a play button.
+    # Make a play button.
     play_button = Button(ai_settings, screen, 'Play')
 
-    # Create an instance to store game statistics.
+    #Create an instance to store game statistics and create a scoreboard.
     stats = GameStats(ai_settings)
+    sb = Scoreboard(ai_settings, screen, stats)
 
     ship = Ship(ai_settings, screen)
     # make a group to store bullets in
     bullets = Group()
     aliens = Group()
 
-    #Create a fleet of aliens.
+    # Create a fleet of aliens.
     gf.create_fleet(ai_settings, screen, ship, aliens)
 
-    #alien = Alien(ai_settings, screen)
+    # alien = Alien(ai_settings, screen)
 
     # Start the main loop for the game.
 
@@ -42,6 +44,6 @@ def run_game():
             gf.update_bullets(ai_settings, screen, ship ,aliens, bullets)
             gf.update_aliens(ai_settings, stats, screen, ship, aliens, bullets)
             
-        gf.update_screen(ai_settings, screen, stats, ship, aliens, bullets, play_button)
+        gf.update_screen(ai_settings, screen, stats, sb, ship, aliens, bullets, play_button)
 
 run_game()
